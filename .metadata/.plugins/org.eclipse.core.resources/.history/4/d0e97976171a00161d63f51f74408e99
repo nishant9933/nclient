@@ -1,0 +1,98 @@
+package com.example.fugro;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class DetailActivity extends ActionBarActivity{
+
+    TextView tvDetail;
+  private GoogleMap googleMap;;
+    ImageButton back;
+    AppLocationService appLocationService;
+    String descriptionalert;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        back = (ImageButton)findViewById(R.id.crossbtn);
+
+        tvDetail = (TextView)findViewById(R.id.textDetail);
+
+        descriptionalert = getIntent().getStringExtra("Detail");
+
+        tvDetail.setText(descriptionalert);
+        
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                appLocationService = new AppLocationService(DetailActivity.this);
+            }
+        });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initilizeMap();
+    }
+    /**
+     * function to load map. If map is not created it will create it for you
+     * */
+    private void initilizeMap() {
+        if (googleMap == null) {
+        	
+            try {
+				googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(
+				        R.id.detailmap)).getMap();
+ 
+				// check if map is created successfully or not
+				if (googleMap == null) {
+				    Toast.makeText(getApplicationContext(),
+				            "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+				            .show();
+				}else{
+					drawMarker();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+    }
+
+	private void drawMarker() {
+		// latitude and longitude
+		double latitude = 17.385044;
+		double longitude = 78.486671;
+		 
+		// create marker
+		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Hello Maps");
+		 
+		// Changing marker icon
+		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+		 
+		// adding marker
+		googleMap.addMarker(marker);
+	}
+}

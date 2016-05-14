@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:layout_margin="5dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:id="@+id/innerlayout"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:weightSum="7"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:background="#ffffff"
+        android:layout_marginTop="5dp">
+
+    <TextView
+        android:id="@+id/listTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="Dust-Dubai"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/listDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_below="@+id/listTitle"
+        android:layout_marginTop="5dp"
+
+        android:textColor="#000000"
+        android:text="From 9:00AM 24-Jan-2016 to 05:00PM 24-Jan-2016" />
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_below="@+id/listDuration"
+        android:layout_marginTop="5dp"
+        android:layout_weight="2"
+        android:textColor="@color/grey"
+        android:text="9:00AM 24-Jan-2016 to 05:00PM 24-Jan-2016" />
+
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/btnview"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_toRightOf="@+id/innerlayout"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="View"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimaryDark"/>
+
+</RelativeLayout>

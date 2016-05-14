@@ -1,0 +1,194 @@
+package com.example.fugro;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Point;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class DetailActivity extends ActionBarActivity{
+
+    TextView tvDetail;
+  private GoogleMap googleMap;;
+    ImageButton back;
+    AppLocationService appLocationService;
+    String descriptionalert;
+    double latitude;
+    double longitude;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        back = (ImageButton)findViewById(R.id.crossbtn);
+
+        tvDetail = (TextView)findViewById(R.id.textDetail);
+
+        descriptionalert = getIntent().getStringExtra("Detail");
+        latitude = Double.parseDouble(getIntent().getStringExtra("Lat"));
+        longitude = Double.parseDouble(getIntent().getStringExtra("Lng"));
+        tvDetail.setText(descriptionalert);
+        
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                appLocationService = new AppLocationService(DetailActivity.this);
+            }
+        });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initilizeMap();
+    }
+    /**
+     * function to load map. If map is not created it will create it for you
+     * */
+    private void initilizeMap() {
+        if (googleMap == null) {
+        	
+            try {
+				googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(
+				        R.id.detailmap)).getMap();
+ 
+				// check if map is created successfully or not
+				if (googleMap == null) {
+				    Toast.makeText(getApplicationContext(),
+				            "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+				            .show();
+				}else{
+					drawMarker();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+    }
+
+	private void drawMarker() {
+		// create marker
+		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Hello Maps");
+		 
+		// Changing marker icon
+		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+		
+		// adding marker
+		googleMap.addMarker(draw(latitude, longitude));
+		LatLng latlng =new LatLng(latitude, longitude);
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(null,10));
+	}
+	// 1. some variables:
+
+    private static final double EARTH_RADIUS = 6378100.0;
+    private int offset;
+
+// 2. convert meters to pixels between 2 points in current zoom:
+
+    private int convertMetersToPixels(double lat, double lng, double radiusInMeters) {
+
+         double lat1 = radiusInMeters / EARTH_RADIUS;
+         double lng1 = radiusInMeters / (EARTH_RADIUS * Math.cos((Math.PI * lat / 180)));
+
+         double lat2 = lat + lat1 * 180 / Math.PI;
+         double lng2 = lng + lng1 * 180 / Math.PI; 
+
+         Point p1 = googleMap.getProjection().toScreenLocation(new LatLng(lat, lng));
+         Point p2 = googleMap.getProjection().toScreenLocation(new LatLng(lat2, lng2));
+
+         return Math.abs(p1.x - p2.x);
+    }
+
+// 3. bitmap creation:
+
+    private Bitmap getBitmap(double lat, double lng) {
+
+        // fill color
+        Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint1.setColor(0x110000FF);
+        paint1.setStyle(Style.FILL);
+
+        // stroke color
+        Paint paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint2.setColor(0xFF0000FF);
+        paint2.setStyle(Style.STROKE);
+
+        // icon
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.proimg);
+
+        // circle radius - 200 meters
+        int radius = offset = convertMetersToPixels(lat, lng, 200);
+
+        // if zoom too small
+        if (radius < icon.getWidth() / 2) {
+
+            radius = icon.getWidth() / 2;
+        }
+
+        // create empty bitmap 
+        Bitmap b = Bitmap.createBitmap(radius * 2, radius * 2, Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+
+        // draw blue area if area > icon size
+        if (radius != icon.getWidth() / 2) {
+
+            c.drawCircle(radius, radius, radius, paint1);
+            c.drawCircle(radius, radius, radius, paint2);
+        }
+
+        // draw icon
+        c.drawBitmap(icon, radius - icon.getWidth() / 2, radius - icon.getHeight() / 2, new Paint());
+
+        return b;
+    }
+
+// 4. calculate image offset:
+
+    private LatLng getCoords(double lat, double lng) {
+
+        LatLng latLng = new LatLng(lat, lng);
+
+        Projection proj = googleMap.getProjection();
+        Point p = proj.toScreenLocation(latLng);
+        p.set(p.x, p.y + offset);
+
+        return proj.fromScreenLocation(p);
+    }
+
+// 5. draw:
+ private MarkerOptions draw(double lat, double lng){
+
+     MarkerOptions options = new MarkerOptions();
+         options.position(getCoords(lat, lng));
+         options.icon(BitmapDescriptorFactory.fromBitmap(getBitmap(lat, lng)));
+         return  options;  
+
+ }
+}

@@ -1,0 +1,230 @@
+package com.example.fugro;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+
+
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class AlertDetailsActivity extends FragmentActivity implements LocationListener {
+
+	 private GoogleMap googleMap;
+	    MarkerOptions marker;
+	    Marker mark;
+    AppLocationService appLocationService;
+    double latitude ;
+    double longitude ;
+    Location location;
+    ImageButton back;
+    String lat,lng;
+
+    protected static final int REQUEST_CHECK_SETTINGS = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.addressmap);
+
+        latitude = Double.parseDouble(getIntent().getStringExtra("Lat"));
+        longitude = Double.parseDouble(getIntent().getStringExtra("Lng"));
+
+        checkGPSServiceEnabled();
+
+        back = (ImageButton) findViewById(R.id.crossbtn);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                appLocationService = new AppLocationService(AlertDetailsActivity.this);
+            }
+        });
+
+        try {
+            // Loading map
+            initilizeMap();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /*googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                googleMap.clear();
+
+                googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                latitude = latLng.latitude;
+                longitude = latLng.longitude;
+
+                Log.e("lat", "" + latLng);
+            }
+        });*/
+    }
+
+    void checkGPSServiceEnabled(){
+
+    	 LocationManager lm = (LocationManager)AlertDetailsActivity.this.getSystemService(Context.LOCATION_SERVICE);
+         boolean gps_enabled = false;
+         boolean network_enabled = false;
+
+         try {
+             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+         } catch(Exception ex) {}
+
+         try {
+             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+         } catch(Exception ex) {}
+
+         if(!gps_enabled && !network_enabled) {
+        	 
+             // notify user
+             AlertDialog.Builder dialog = new AlertDialog.Builder(AlertDetailsActivity.this);
+             dialog.setTitle("Use Location");
+             dialog.setMessage(AlertDetailsActivity.this.getResources().getString(R.string.gps_network_not_enabled));
+             dialog.setPositiveButton(AlertDetailsActivity.this.getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                     // TODO Auto-generated method stub
+                     Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                     AlertDetailsActivity.this.startActivity(myIntent);
+                     //get gps
+                 }
+             });
+             dialog.setNegativeButton(AlertDetailsActivity.this.getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+
+                 @Override
+                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                     // TODO Auto-generated method stub
+
+                 }
+             });
+             dialog.show();
+         }
+
+    }
+
+     private void initilizeMap() {
+        if (googleMap == null) {
+
+            try {
+            	
+                googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+                /*googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                String bestProvider = locationManager.getBestProvider(criteria, true);
+                Location location = locationManager.getLastKnownLocation(bestProvider);
+                if (location != null) {
+                    onLocationChanged(location);
+                }
+                locationManager.requestLocationUpdates(bestProvider, 30000, 0, AlertDetailsActivity.this);
+
+                Location gpsLocation = appLocationService.getLocation(LocationManager.GPS_PROVIDER);
+                if (gpsLocation != null) {
+                    latitude = gpsLocation.getLatitude();
+                    longitude = gpsLocation.getLongitude();
+
+                }
+                LatLng latLng = new LatLng(latitude, longitude);*/
+                // Show the current location in Google Map
+            //    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                // Zoom in the Google Map
+            //    googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
+
+                // check if map is created successfully or not
+                if (googleMap == null) {
+                    Toast.makeText(getApplicationContext(),
+                            "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }catch(SecurityException e){
+
+            }
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+     //   initilizeMap();
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+        
+        if (resultCode == ConnectionResult.SUCCESS){
+         Toast.makeText(getApplicationContext(), 
+           "isGooglePlayServicesAvailable SUCCESS", 
+           Toast.LENGTH_LONG).show();
+        }else{
+         int RQS_GooglePlayServices;
+		GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+      /*  double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+        googleMap.addMarker(new MarkerOptions().position(latLng));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));*/
+    }
+
+
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+}

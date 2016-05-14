@@ -1,0 +1,279 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <RelativeLayout
+        android:id="@+id/llayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/connect"
+            android:layout_alignParentTop="true"
+            android:minHeight="?attr/actionBarSize">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:id="@+id/toolbar_title" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <com.example.fugro.SlidingTabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_below="@+id/toolbar"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sliding_tabs"
+            android:layout_above="@+id/relativelocation"
+            android:background="@android:color/white" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager2"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sliding_tabs"
+            android:layout_above="@+id/relativelocation"
+            android:background="@android:color/white"
+            android:visibility="gone"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sliding_tabs"
+            android:layout_above="@+id/relativelocation"
+            android:background="@android:color/white"
+            android:visibility="gone"/>
+        <!--<android.support.v4.view.ViewPager-->
+            <!--android:id="@+id/viewpager4"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_below="@+id/toolbar"-->
+            <!--android:layout_above="@+id/relativelocation"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:visibility="gone"/>-->
+        <LinearLayout
+            android:id="@+id/viewpager4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/relativelocation"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/relativelocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2F2F2"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+
+           <!-- <Button
+                android:id="@+id/editloc"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:hint="Current Location"
+                android:background="@drawable/dshape"
+                android:layout_above="@+id/linearbar"/>
+
+            <LinearLayout
+                android:id="@+id/linearbar"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@color/connect"
+                android:padding="5dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+                    <RadioButton
+                        android:id="@+id/searchbtn"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:checked="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_search"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <RadioButton
+                        android:id="@+id/contactbtn"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_contact"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <RadioButton
+                        android:id="@+id/chatbtn"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_chat"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <RadioButton
+                        android:id="@+id/listbot"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_menu"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <RadioButton
+                        android:id="@+id/alertbtn"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_notification"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+
+                </RadioGroup>
+
+                &lt;!&ndash;<ImageButton&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/searchbtn"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_alignParentLeft="true"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:background="#00000000"&ndash;&gt;
+                    &lt;!&ndash;android:src="@drawable/footersearchicn" />&ndash;&gt;
+
+
+                &lt;!&ndash;<ImageButton&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/contactbtn"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+
+                    &lt;!&ndash;android:background="#00000000"&ndash;&gt;
+                    &lt;!&ndash;android:src="@drawable/contacticn" />&ndash;&gt;
+
+                &lt;!&ndash;<ImageButton&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/chatbtn"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:background="#00000000"&ndash;&gt;
+                    &lt;!&ndash;android:src="@drawable/chaticn" />&ndash;&gt;
+
+                &lt;!&ndash;<ImageButton&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/listbot"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:background="#00000000"&ndash;&gt;
+                    &lt;!&ndash;android:src="@drawable/menueicn" />&ndash;&gt;
+
+                &lt;!&ndash;<ImageButton&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/alertbtn"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:background="#00000000"&ndash;&gt;
+                    &lt;!&ndash;android:src="@drawable/notifactionicn" />&ndash;&gt;
+
+
+            </LinearLayout>-->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <!--<ListView
+        android:id="@+id/navdrawer"
+        android:layout_width="@dimen/navdrawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/white"
+        android:dividerHeight="1dp"
+        android:drawSelectorOnTop="false"></ListView>-->
+
+    <!--    <LinearLayout
+            android:id="@+id/mainhome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#60ffffff">-->
+
+    <LinearLayout
+        android:id="@+id/mainhome"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/connect"
+        android:orientation="vertical">
+
+        <com.example.fugro.RoundImage
+            android:id="@+id/roundimg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="parul@gmail.com"
+            android:textColor="#ffffff" />
+
+        <ListView
+            android:id="@+id/navdrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/connect"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/white"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"></ListView>
+    </LinearLayout>
+
+    <!--  </LinearLayout>-->
+
+</android.support.v4.widget.DrawerLayout>
