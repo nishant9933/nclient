@@ -1,16 +1,44 @@
 [
 {
-	"LeaveDate":"1-Jan-2018",
-	"Day":"Monday",
-	"Title":"New Year Day",
+	"LeaveDate":"18-Oct-2018",
+	"Day":"Thursday",
+	"Title":"Dusshera /Vijya Dashmi /Ayutha Ayutha Pooja,
 	"Location":"Hyderabad",
-	"HolidayType":"F|H"
+	"HolidayType":"Flex"
 },
 {
-	"LeaveDate":"1-Jan-2018",
-	"Day":"Monday",
-	"Title":"New Year Day",
+	"LeaveDate":"19-Oct-2018",
+	"Day":"Friday",
+	"Title":"Dusshera",
 	"Location":"Hyderabad",
-	"HolidayType":"F|H"
+	"HolidayType":"Fix holiday"
+},
+{
+	"LeaveDate":"7-Nov-2018",
+	"Day":"Wednesday",
+	"Title":"Diwali",
+	"Location":"Hyderabad",
+	"HolidayType":"Fix holiday"
+},
+{
+	"LeaveDate":"8-Nov-2018",
+	"Day":"Thursday",
+	"Title":"Diwali",
+	"Location":"Hyderabad",
+	"HolidayType":"Flex"
+},
+{
+	"LeaveDate":"23-Nov-2018",
+	"Day":"Friday",
+	"Title":"GuruNanak Jayanti",
+	"Location":"Hyderabad",
+	"HolidayType":"Flex"
+},
+{
+	"LeaveDate":"25-Dec-2018",
+	"Day":"Tuesday",
+	"Title":"Christmas",
+	"Location":"Hyderabad",
+	"HolidayType":"Fix holiday"
 }
 ]
